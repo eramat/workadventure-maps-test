@@ -304,19 +304,6 @@
          "tilecount":100,
          "tileheight":32,
          "tilewidth":32
-        }, 
-        {
-         "columns":11,
-         "firstgid":584,
-         "image":"..\/workadventure-map-tiled\/assets\/Office_Tilesets\/tileset1.png",
-         "imageheight":352,
-         "imagewidth":352,
-         "margin":0,
-         "name":"tileset1",
-         "spacing":0,
-         "tilecount":121,
-         "tileheight":32,
-         "tilewidth":32
         }],
  "tilewidth":32,
  "version":1,
