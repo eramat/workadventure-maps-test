@@ -34,9 +34,9 @@
 	     	 "value":"https:\/\/wbo.ophir.dev\/boards\/0fl2ff9Fc4NdZXCMIJTHSZhvtOGphKrSRHOqA3ZFspQ-"
             	},
 	 	{
-		 "name":"openWebsiteTriggerMessage",
+		 "name":"openWebsiteTrigger",
 		 "type":"string",
-		 "value":"Appuyer sur ESPACE pour ouvrir le tableau"
+		 "value":"onaction"
 	 	}],
          "type":"tilelayer",
          "visible":true,
