@@ -32,7 +32,12 @@
              	 "name":"openWebsite",
 	     	 "type":"string",
 	     	 "value":"https:\/\/wbo.ophir.dev\/boards\/0fl2ff9Fc4NdZXCMIJTHSZhvtOGphKrSRHOqA3ZFspQ-"
-            	}],
+            	},
+	 	{
+		 "name":"openWebsiteTriggerMessage",
+		 "type":"string",
+		 "value":"Appuyer sur ESPACE pour ouvrir le tableau"
+	 	}],
          "type":"tilelayer",
          "visible":true,
          "width":60,
