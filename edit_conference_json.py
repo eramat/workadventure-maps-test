@@ -4,6 +4,8 @@ JSON_FILENAME = 'conference.json'
 
 ETHERPAD_URL = "https:\/\/pad.inf.re\/p\/" # + clé à générer
 WHITEBOARD_URL = "https:\/\/wbo.ophir.dev\/boards\/" # + clé à générer
+VIDEO_URL = "https://www.youtube.com/embed/" # + ID de la vidéo
+POSTER_URL = "https://cdn.futura-sciences.com/buildsv6/images/largeoriginal/6/f/c/"
 
 website_props = {"properties":[
 		{
@@ -74,6 +76,14 @@ def main():
         props = update_website_properties(WHITEBOARD_URL, "0fl2ff9Fc4NdZXCMIJTHSZhvtOGphKrSRHOqA3ZFspQ-")
         json_obj['layers']['name' == "whiteboardRoom" + cpt].update(props)
 
+        props = update_website_properties(POSTER_URL, "6fc6bc1b21_50021087_albert-einstein-langue.jpg")
+        json_obj['layers']['name' == 'posterRoom' + cpt].update(props)
+
+        props = update_website_properties(VIDEO_URL, "dQw4w9WgXcQ")
+        json_obj['layers']['name' == 'videoRoom' + cpt].update(props)
+
+    #props = update_jitsi_properties("RegulatoryIntakesPrintDelicately")
+    #json_obj['layers']['name' == 'jitsiConfAmphi'].update(props)
     write_in_json(JSON_FILENAME, json_obj)
 
 if __name__=="__main__":
