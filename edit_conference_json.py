@@ -3,10 +3,10 @@ import copy
 
 JSON_FILENAME = 'conference.json'
 
-ETHERPAD_URL = "https:\/\/pad.inf.re\/p\/" # + clé à générer
-WHITEBOARD_URL = "https:\/\/wbo.ophir.dev\/boards\/" # + clé à générer
-VIDEO_URL = "https:\/\/www.youtube.com\/embed\/" # + ID de la vidéo
-POSTER_URL = "https:\/\/cdn.futura-sciences.com\/buildsv6\/images\/largeoriginal\/6\/f\/c\/"
+ETHERPAD_URL = "https://pad.inf.re/p/" # + clé à générer
+WHITEBOARD_URL = "https://wbo.ophir.dev/boards/" # + clé à générer
+VIDEO_URL = "https://www.youtube.com/embed/" # + ID de la vidéo
+POSTER_URL = "https://cdn.futura-sciences.com/buildsv6/images/largeoriginal/6/f/c/"
 
 ETHERPAD_KEY = "2Ej6zYwKybU3aXojQHvO"
 WHITEBOARD_KEY = "JDBWUsyrw325eTTCTmaPINT-dGWTIxPIa3e6g2anvy4-"
