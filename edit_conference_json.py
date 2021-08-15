@@ -1,4 +1,5 @@
 import json
+import copy
 
 JSON_FILENAME = 'conference.json'
 
@@ -6,6 +7,11 @@ ETHERPAD_URL = "https:\/\/pad.inf.re\/p\/" # + clé à générer
 WHITEBOARD_URL = "https:\/\/wbo.ophir.dev\/boards\/" # + clé à générer
 VIDEO_URL = "https://www.youtube.com/embed/" # + ID de la vidéo
 POSTER_URL = "https://cdn.futura-sciences.com/buildsv6/images/largeoriginal/6/f/c/"
+
+MSG_ETHERPAD = "Appuyer sur ESPACE pour ouvrir le document collaboratif"
+MSG_WHITEBOARD = "Appuyer sur ESPACE pour ouvrir le tableau blanc"
+MSG_VIDEO = "Appuyer sur ESPACE pour regarder votre vidéo"
+MSG_POSTER = "Appuyer sur ESPACE pour regarder votre affiche"
 
 website_props = {"properties":[
 		{
@@ -16,7 +22,11 @@ website_props = {"properties":[
 		    "name":"openWebsiteTrigger",
 		    "type":"string",
 		    "value":"onaction"
-	 	}]
+	 	},
+        {
+            "name": "openWebsiteTriggerMessage",
+            "type": "string"
+        }]
     }
 
 jitsi_props = {"properties":[
@@ -42,15 +52,21 @@ def write_in_json(filename, data):
     with open(filename, mode='w') as fp:
         json.dump(data, fp)
 
-def update_website_properties(url, key):
-    data = website_props
-    data['properties']['name' == "openWebsite"].update({'values': url + key})
+def update_website_properties(url, key, message):
+    data = copy.deepcopy(website_props)
+    for values in data['properties']:
+            if values['name'] == "openWebsite":
+                values.update({'values': url + key})
+            if values['name'] == "openWebsiteTriggerMessage":
+                values.update({'values': message})
     
     return data
 
 def update_jitsi_properties(room):
-    data = jitsi_props
-    data['properties']['name' == "jitsiRoom"].update({'values': room})
+    data = copy.deepcopy(jitsi_props)
+    for values in data['properties']:
+            if values['name'] == "jitsiRoom":
+                values.update({'values': room})
 
     return data
 
@@ -68,22 +84,35 @@ def main():
         cpt = cpt_to_str(i)
 
         props = update_jitsi_properties("RegulatoryIntakesPrintDelicately")
-        json_obj['layers']['name' == "jitsiConfRoom0" + cpt].update(props)
+        for values in json_obj['layers']:
+            if values['name'] == "jitsiConfRoom" + cpt:
+                values.update(props)
 
-        props = update_website_properties(ETHERPAD_URL, "ox1LyFxabVryx_Ggndep")
-        json_obj['layers']['name' == "documentRoom" + cpt].update(props)
+        props = update_website_properties(ETHERPAD_URL, "ox1LyFxabVryx_Ggndep", MSG_ETHERPAD)
+        for values in json_obj['layers']:
+            if values['name'] == "documentRoom" + cpt:
+                values.update(props)
 
-        props = update_website_properties(WHITEBOARD_URL, "0fl2ff9Fc4NdZXCMIJTHSZhvtOGphKrSRHOqA3ZFspQ-")
-        json_obj['layers']['name' == "whiteboardRoom" + cpt].update(props)
+        props = update_website_properties(WHITEBOARD_URL, "0fl2ff9Fc4NdZXCMIJTHSZhvtOGphKrSRHOqA3ZFspQ-", MSG_WHITEBOARD)
+        for values in json_obj['layers']:
+            if values['name'] == "whiteboardRoom" + cpt:
+                values.update(props)
 
-        props = update_website_properties(POSTER_URL, "6fc6bc1b21_50021087_albert-einstein-langue.jpg")
-        json_obj['layers']['name' == 'posterRoom' + cpt].update(props)
+        props = update_website_properties(POSTER_URL, "6fc6bc1b21_50021087_albert-einstein-langue.jpg", MSG_POSTER)
+        for values in json_obj['layers']:
+            if values['name'] == "posterRoom" + cpt:
+                values.update(props)
 
-        props = update_website_properties(VIDEO_URL, "dQw4w9WgXcQ")
-        json_obj['layers']['name' == 'videoRoom' + cpt].update(props)
+        props = update_website_properties(VIDEO_URL, "dQw4w9WgXcQ", MSG_VIDEO)
+        for values in json_obj['layers']:
+            if values['name'] == "videoRoom" + cpt:
+                values.update(props)
 
-    #props = update_jitsi_properties("RegulatoryIntakesPrintDelicately")
-    #json_obj['layers']['name' == 'jitsiConfAmphi'].update(props)
+    props = update_jitsi_properties("RegulatoryIntakesPrintDelicately")
+    for values in json_obj['layers']:
+            if values['name'] == "videoRoom" + cpt:
+                values.update(props)
+    
     write_in_json(JSON_FILENAME, json_obj)
 
 if __name__=="__main__":
