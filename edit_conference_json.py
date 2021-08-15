@@ -56,9 +56,9 @@ def update_website_properties(url, key, message):
     data = copy.deepcopy(website_props)
     for values in data['properties']:
             if values['name'] == "openWebsite":
-                values.update({'values': url + key})
+                values.update({'value': url + key})
             if values['name'] == "openWebsiteTriggerMessage":
-                values.update({'values': message})
+                values.update({'value': message})
     
     return data
 
@@ -66,7 +66,7 @@ def update_jitsi_properties(room):
     data = copy.deepcopy(jitsi_props)
     for values in data['properties']:
             if values['name'] == "jitsiRoom":
-                values.update({'values': room})
+                values.update({'value': room})
 
     return data
 
