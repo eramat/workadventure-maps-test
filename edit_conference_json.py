@@ -12,7 +12,7 @@ ETHERPAD_KEY = "2Ej6zYwKybU3aXojQHvO"
 WHITEBOARD_KEY = "JDBWUsyrw325eTTCTmaPINT-dGWTIxPIa3e6g2anvy4-"
 VIDEO_KEY = "dQw4w9WgXcQ"
 POSTER_KEY = "6fc6bc1b21_50021087_albert-einstein-langue.jpg"
-JITSI_KEY = "RegulatoryIntakesPrintDelicately"
+JITSI_KEY = "moderated/b4ed0de2c64fb2e9942764ac6ab120345db677ec0b1297691eedf8d015f6f53f"
 
 MSG_ETHERPAD = "Appuyer sur ESPACE pour ouvrir le document collaboratif"
 MSG_WHITEBOARD = "Appuyer sur ESPACE pour ouvrir le tableau blanc"
