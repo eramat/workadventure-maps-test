@@ -1,24 +1,14 @@
 import json
 import copy
 
-JSON_FILENAME = 'conference.json'
+JSON_MAP_FILENAME = 'conference.json'
+JSON_INTERACTIONS_FILENAME = 'groups.json'
 
-ETHERPAD_URL = "https://pad.inf.re/p/" # + clé à générer
-WHITEBOARD_URL = "https://wbo.ophir.dev/boards/" # + clé à générer
-VIDEO_URL = "https://www.youtube.com/embed/" # + ID de la vidéo
-POSTER_URL = "https://cdn.futura-sciences.com/buildsv6/images/largeoriginal/6/f/c/"
-
-ETHERPAD_KEY = "2Ej6zYwKybU3aXojQHvO"
-WHITEBOARD_KEY = "JDBWUsyrw325eTTCTmaPINT-dGWTIxPIa3e6g2anvy4-"
-VIDEO_KEY = "dQw4w9WgXcQ"
-POSTER_KEY = "6fc6bc1b21_50021087_albert-einstein-langue.jpg"
-JITSI_KEY = "moderated/b4ed0de2c64fb2e9942764ac6ab120345db677ec0b1297691eedf8d015f6f53f"
-
-MSG_ETHERPAD = "Appuyer sur ESPACE pour ouvrir le document collaboratif"
+MSG_DOCUMENT = "Appuyer sur ESPACE pour ouvrir le document collaboratif"
 MSG_WHITEBOARD = "Appuyer sur ESPACE pour ouvrir le tableau blanc"
 MSG_VIDEO = "Appuyer sur ESPACE pour regarder votre vidéo"
 MSG_POSTER = "Appuyer sur ESPACE pour regarder votre affiche"
-MSG_JITSI_GRP = "Appuyer sur ESPACE pour rejoindre la visioconférence de votre groupe"
+MSG_JITSI_GRP = "Appuyer sur ESPACE pour rejoindre votre groupe en visioconférence"
 MSG_JITSI_AMPHI = "Appuyer sur ESPACE pour rejoindre la classe virtuel"
 
 website_props = {"properties":[
@@ -64,11 +54,11 @@ def write_in_json(filename, data):
     with open(filename, mode='w') as fp:
         json.dump(data, fp)
 
-def update_website_properties(url, key, message):
+def update_website_properties(url, message):
     data = copy.deepcopy(website_props)
     for values in data['properties']:
             if values['name'] == "openWebsite":
-                values.update({'value': url + key})
+                values.update({'value': url})
             if values['name'] == "openWebsiteTriggerMessage":
                 values.update({'value': message})
     
@@ -84,50 +74,33 @@ def update_jitsi_properties(room, message):
 
     return data
 
+def insert_in_dictionnary(json_obj, name, url, message, jitsi=False):
+    if jitsi:
+        props = update_jitsi_properties(url, message)
+    else:
+        props = update_website_properties(url, message)
+    
+    for values in json_obj['layers']:
+            if values['name'] == name:
+                values.update(props)
 
-def cpt_to_str(cpt):
-    if cpt < 10:
-        return "0" + str(cpt)
-    else :
-        return str(cpt)
 
 def main():
-    json_obj = load_json(JSON_FILENAME)
-    
-    for i in range(1, 15):
-        cpt = cpt_to_str(i)
+    json_map = load_json(JSON_MAP_FILENAME)
+    json_interactions = load_json(JSON_INTERACTIONS_FILENAME)
 
-        props = update_jitsi_properties(JITSI_KEY, MSG_JITSI_GRP)
-        for values in json_obj['layers']:
-            if values['name'] == "jitsiConfRoom" + cpt:
-                values.update(props)
+    for values in json_interactions["groups"]:
+        group = values["group"]
 
-        props = update_website_properties(ETHERPAD_URL, ETHERPAD_KEY, MSG_ETHERPAD)
-        for values in json_obj['layers']:
-            if values['name'] == "documentRoom" + cpt:
-                values.update(props)
+        insert_in_dictionnary(json_map, "jitsiConfRoom" + group, values["jitsi"], MSG_JITSI_GRP, True)
+        insert_in_dictionnary(json_map, "documentRoom" + group, values["document"], MSG_DOCUMENT)
+        insert_in_dictionnary(json_map, "whiteboardRoom" + group, values["whiteboard"], MSG_WHITEBOARD)
+        insert_in_dictionnary(json_map, "posterRoom" + group, values["poster"], MSG_POSTER)
+        insert_in_dictionnary(json_map, "videoRoom" + group, values["video"], MSG_VIDEO)
 
-        props = update_website_properties(WHITEBOARD_URL, WHITEBOARD_KEY, MSG_WHITEBOARD)
-        for values in json_obj['layers']:
-            if values['name'] == "whiteboardRoom" + cpt:
-                values.update(props)
+    insert_in_dictionnary(json_map, "jitsiConfAmphi" + group, json_interactions["amphi"]["jitsi"], MSG_JITSI_AMPHI, True)
 
-        props = update_website_properties(POSTER_URL, POSTER_KEY, MSG_POSTER)
-        for values in json_obj['layers']:
-            if values['name'] == "posterRoom" + cpt:
-                values.update(props)
-
-        props = update_website_properties(VIDEO_URL, VIDEO_KEY, MSG_VIDEO)
-        for values in json_obj['layers']:
-            if values['name'] == "videoRoom" + cpt:
-                values.update(props)
-
-    props = update_jitsi_properties(JITSI_KEY, MSG_JITSI_AMPHI)
-    for values in json_obj['layers']:
-            if values['name'] == "jitsiConfAmphi":
-                values.update(props)
-    
-    write_in_json(JSON_FILENAME, json_obj)
+    write_in_json(JSON_MAP_FILENAME, json_map)
 
 if __name__=="__main__":
     main()
